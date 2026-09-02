@@ -28,8 +28,20 @@ O con el Makefile:
 
 ## Editar el contenido
 
-Todo vive en **`src/data/cv.js`**: perfil, enlaces, sobre mí, experiencia,
-proyectos y stack. No hace falta tocar HTML.
+El sitio es bilingüe. Cada idioma tiene su fichero de contenido, con **la misma
+estructura**: si añades algo en uno, añádelo en el otro.
+
+| Fichero | Qué contiene |
+|---|---|
+| `src/data/en.js` | Todo el texto en inglés — se sirve en `/` |
+| `src/data/es.js` | Todo el texto en español — se sirve en `/es/` |
+| `src/data/site.js` | Datos comunes: nombre, email, enlaces, avatar |
+
+- Para poner foto: déjala en `public/avatar.jpg` y pon `avatar: '/avatar.jpg'`
+  en `site.js`. Si lo dejas en `null` se muestran las iniciales.
+- Para invertir los idiomas (español en la raíz): cambia `defaultLang` en
+  `site.js` e intercambia el contenido de `src/pages/index.astro` y
+  `src/pages/es/index.astro`.
 
 Los estilos y la paleta (modo claro y oscuro) están en `src/styles/global.css`,
 en las variables CSS de `:root`.

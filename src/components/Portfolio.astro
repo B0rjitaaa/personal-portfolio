@@ -1,0 +1,217 @@
+---
+import Icon from './Icon.astro';
+import { site, languages, withBase } from '../data/site.js';
+
+const { t } = Astro.props;
+const other = t.lang === 'en' ? languages.es : languages.en;
+const otherCode = t.lang === 'en' ? 'es' : 'en';
+const year = new Date().getFullYear();
+---
+
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="nav-brand" href={withBase(languages[t.lang].path)}>{site.shortName}</a>
+    <div class="nav-links">
+      <a href="#perfil">{t.nav.profile}</a>
+      <a href="#skills">{t.nav.skills}</a>
+      <a href="#experiencia">{t.nav.experience}</a>
+      <a href="#formacion">{t.nav.education}</a>
+      <a href="#contacto">{t.nav.contact}</a>
+    </div>
+    <a
+      class="lang-switch"
+      href={withBase(other.path)}
+      hreflang={otherCode}
+      title={t.switchTo}
+    >
+      <Icon name="globe" />
+      {other.label}
+    </a>
+  </div>
+</nav>
+
+<main>
+  <header class="wrap hero">
+    <div class="hero-top">
+      {
+        site.avatar ? (
+          <img class="avatar" src={site.avatar} alt={site.name} width="88" height="88" />
+        ) : (
+          <div class="avatar avatar-initials" aria-hidden="true">
+            {site.initials}
+          </div>
+        )
+      }
+      <span class="badge">{t.hero.badge}</span>
+    </div>
+    <h1>{site.name}</h1>
+    <p class="hero-role">{t.hero.role}</p>
+    <p class="hero-meta">{t.hero.location}</p>
+    <div class="hero-links">
+      {
+        site.links.map((l) => (
+          <a
+            class="btn"
+            href={l.url}
+            rel="noopener"
+            target={l.url.startsWith('mailto:') ? undefined : '_blank'}
+          >
+            <Icon name={l.icon} />
+            {l.label}
+          </a>
+        ))
+      }
+    </div>
+  </header>
+
+  <div class="wrap">
+    <section id="perfil">
+      <h2>{t.profile.heading}</h2>
+      <p class="lead">{t.profile.body}</p>
+    </section>
+
+    <section id="skills">
+      <h2>{t.skills.heading}</h2>
+      {
+        t.skills.groups.map((g) => (
+          <div class="stack-group">
+            <span>{g.label}</span>
+            <div class="tags">
+              {g.items.map((i) => (
+                <span class="tag">{i}</span>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="experiencia">
+      <h2>{t.experience.heading}</h2>
+      {
+        t.experience.jobs.map((job) => (
+          <article class="item">
+            <div class="item-head">
+              <div class="item-role">
+                {job.role} <span class="item-company">· {job.company}</span>
+              </div>
+              <div class="item-meta">{job.period}</div>
+            </div>
+            <div class="item-place">{job.location}</div>
+            {job.summary && <p class="item-summary">{job.summary}</p>}
+
+            {job.bullets && (
+              <ul>
+                {job.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            )}
+            {job.tech && (
+              <div class="tags">
+                {job.tech.map((x) => (
+                  <span class="tag">{x}</span>
+                ))}
+              </div>
+            )}
+
+            {job.projects &&
+              job.projects.map((p) => (
+                <div class="project">
+                  <h3>
+                    {p.url ? (
+                      <a href={p.url} target="_blank" rel="noopener">
+                        {p.name} ↗
+                      </a>
+                    ) : (
+                      p.name
+                    )}
+                    {p.note && <span class="project-note"> — {p.note}</span>}
+                  </h3>
+                  <ul>
+                    {p.bullets.map((b) => (
+                      <li>{b}</li>
+                    ))}
+                  </ul>
+                  {p.tech && (
+                    <div class="tags">
+                      {p.tech.map((x) => (
+                        <span class="tag">{x}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))}
+          </article>
+        ))
+      }
+    </section>
+
+    <section id="formacion">
+      <h2>{t.education.heading}</h2>
+      {
+        t.education.items.map((e) => (
+          <div class="row-item">
+            <div>
+              <div class="row-title">{e.title}</div>
+              <div class="row-note">{e.place}</div>
+            </div>
+            <div class="item-meta">{e.period}</div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="charlas">
+      <h2>{t.talks.heading}</h2>
+      {
+        t.talks.items.map((c) => (
+          <div class="row-item">
+            <div>
+              <div class="row-title">{c.title}</div>
+              <div class="row-note">{c.note}</div>
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section id="idiomas">
+      <h2>{t.languagesSection.heading}</h2>
+      <div class="stack-group">
+        <span>{t.languagesSection.languages.label}</span>
+        <div>{t.languagesSection.languages.value}</div>
+      </div>
+      <div class="stack-group">
+        <span>{t.languagesSection.interests.label}</span>
+        <div>{t.languagesSection.interests.value}</div>
+      </div>
+    </section>
+
+    <section id="contacto" class="contact">
+      <h2>{t.contact.heading}</h2>
+      <p>{t.contact.body}</p>
+      <div class="hero-links">
+        <a class="btn" href={`mailto:${site.email}`}>
+          <Icon name="mail" />
+          {site.email}
+        </a>
+        {
+          site.links
+            .filter((l) => !l.url.startsWith('mailto:'))
+            .map((l) => (
+              <a class="btn" href={l.url} target="_blank" rel="noopener">
+                <Icon name={l.icon} />
+                {l.label}
+              </a>
+            ))
+        }
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer class="wrap">
+  <span>© {year} {site.name}</span>
+  <span>{t.footer}</span>
+</footer>

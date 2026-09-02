@@ -1,27 +1,35 @@
 ---
 import '../styles/global.css';
-import { profile } from '../data/cv.js';
+import { languages, withBase } from '../data/site.js';
 
-const { title = `${profile.name} — ${profile.role}`, description = profile.tagline } = Astro.props;
+const { t } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const alternates = Object.entries(languages).map(([code, l]) => ({
+  code,
+  href: new URL(withBase(l.path), Astro.site).toString(),
+}));
+const xDefault = new URL(withBase(languages.en.path), Astro.site).toString();
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={t.lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
     <link rel="canonical" href={canonical} />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
+    {alternates.map((a) => <link rel="alternate" hreflang={a.code} href={a.href} />)}
+    <link rel="alternate" hreflang="x-default" href={xDefault} />
+    <meta property="og:type" content="profile" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:locale" content={t.lang === 'es' ? 'es_ES' : 'en_GB'} />
+    <meta name="twitter:card" content="summary" />
     <link
       rel="icon"
-      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👋</text></svg>"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>"
     />
   </head>
   <body>
