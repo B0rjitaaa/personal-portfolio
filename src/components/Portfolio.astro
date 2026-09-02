@@ -6,7 +6,12 @@ const { t } = Astro.props;
 const other = t.lang === 'en' ? languages.es : languages.en;
 const otherCode = t.lang === 'en' ? 'es' : 'en';
 const year = new Date().getFullYear();
+
+// Numeración de las secciones: 01, 02, 03…
+const n = (i) => String(i).padStart(2, '0');
 ---
+
+<div class="progress" id="progress"></div>
 
 <nav class="nav">
   <div class="wrap nav-inner">
@@ -18,12 +23,7 @@ const year = new Date().getFullYear();
       <a href="#formacion">{t.nav.education}</a>
       <a href="#contacto">{t.nav.contact}</a>
     </div>
-    <a
-      class="lang-switch"
-      href={withBase(other.path)}
-      hreflang={otherCode}
-      title={t.switchTo}
-    >
+    <a class="lang-switch" href={withBase(other.path)} hreflang={otherCode} title={t.switchTo}>
       <Icon name="globe" />
       {other.label}
     </a>
@@ -35,23 +35,26 @@ const year = new Date().getFullYear();
     <div class="hero-top">
       {
         site.avatar ? (
-          <img class="avatar" src={site.avatar} alt={site.name} width="88" height="88" />
+          <img class="avatar" src={site.avatar} alt={site.name} width="92" height="92" />
         ) : (
           <div class="avatar avatar-initials" aria-hidden="true">
-            {site.initials}
+            <span>{site.initials}</span>
           </div>
         )
       }
-      <span class="badge">{t.hero.badge}</span>
+      <span class="badge"><span class="badge-dot"></span>{t.hero.badge}</span>
     </div>
     <h1>{site.name}</h1>
     <p class="hero-role">{t.hero.role}</p>
-    <p class="hero-meta">{t.hero.location}</p>
+    <p class="hero-meta">
+      <Icon name="pin" />
+      {t.hero.location}
+    </p>
     <div class="hero-links">
       {
-        site.links.map((l) => (
+        site.links.map((l, i) => (
           <a
-            class="btn"
+            class={i === 0 ? 'btn btn-primary' : 'btn'}
             href={l.url}
             rel="noopener"
             target={l.url.startsWith('mailto:') ? undefined : '_blank'}
@@ -65,13 +68,21 @@ const year = new Date().getFullYear();
   </header>
 
   <div class="wrap">
-    <section id="perfil">
-      <h2>{t.profile.heading}</h2>
+    <section id="perfil" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(1)}</span>
+        <h2>{t.profile.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
       <p class="lead">{t.profile.body}</p>
     </section>
 
-    <section id="skills">
-      <h2>{t.skills.heading}</h2>
+    <section id="skills" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(2)}</span>
+        <h2>{t.skills.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
       {
         t.skills.groups.map((g) => (
           <div class="stack-group">
@@ -87,68 +98,78 @@ const year = new Date().getFullYear();
     </section>
 
     <section id="experiencia">
-      <h2>{t.experience.heading}</h2>
-      {
-        t.experience.jobs.map((job) => (
-          <article class="item">
-            <div class="item-head">
-              <div class="item-role">
-                {job.role} <span class="item-company">· {job.company}</span>
-              </div>
-              <div class="item-meta">{job.period}</div>
-            </div>
-            <div class="item-place">{job.location}</div>
-            {job.summary && <p class="item-summary">{job.summary}</p>}
-
-            {job.bullets && (
-              <ul>
-                {job.bullets.map((b) => (
-                  <li>{b}</li>
-                ))}
-              </ul>
-            )}
-            {job.tech && (
-              <div class="tags">
-                {job.tech.map((x) => (
-                  <span class="tag">{x}</span>
-                ))}
-              </div>
-            )}
-
-            {job.projects &&
-              job.projects.map((p) => (
-                <div class="project">
-                  <h3>
-                    {p.url ? (
-                      <a href={p.url} target="_blank" rel="noopener">
-                        {p.name} ↗
-                      </a>
-                    ) : (
-                      p.name
-                    )}
-                    {p.note && <span class="project-note"> — {p.note}</span>}
-                  </h3>
-                  <ul>
-                    {p.bullets.map((b) => (
-                      <li>{b}</li>
-                    ))}
-                  </ul>
-                  {p.tech && (
-                    <div class="tags">
-                      {p.tech.map((x) => (
-                        <span class="tag">{x}</span>
-                      ))}
-                    </div>
-                  )}
+      <div class="section-head reveal">
+        <span class="section-num">{n(3)}</span>
+        <h2>{t.experience.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
+      <div class="timeline">
+        {
+          t.experience.jobs.map((job) => (
+            <article class="item reveal">
+              <div class="item-head">
+                <div class="item-role">
+                  {job.role} <span class="item-company">· {job.company}</span>
                 </div>
-              ))}
-          </article>
-        ))
-      }
+                <div class="item-meta">{job.period}</div>
+              </div>
+              <div class="item-place">{job.location}</div>
+              {job.summary && <p class="item-summary">{job.summary}</p>}
+
+              {job.bullets && (
+                <ul>
+                  {job.bullets.map((b) => (
+                    <li>{b}</li>
+                  ))}
+                </ul>
+              )}
+              {job.tech && (
+                <div class="tags">
+                  {job.tech.map((x) => (
+                    <span class="tag">{x}</span>
+                  ))}
+                </div>
+              )}
+
+              {job.projects &&
+                job.projects.map((p) => (
+                  <div class="project">
+                    <h3>
+                      {p.url ? (
+                        <a href={p.url} target="_blank" rel="noopener">
+                          {p.name} ↗
+                        </a>
+                      ) : (
+                        p.name
+                      )}
+                      {p.note && <span class="project-note"> — {p.note}</span>}
+                    </h3>
+                    <ul>
+                      {p.bullets.map((b) => (
+                        <li>{b}</li>
+                      ))}
+                    </ul>
+                    {p.tech && (
+                      <div class="tags">
+                        {p.tech.map((x) => (
+                          <span class="tag">{x}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+            </article>
+          ))
+        }
+      </div>
     </section>
 
-    <section id="formacion">
-      <h2>{t.education.heading}</h2>
+    <section id="formacion" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(4)}</span>
+        <h2>{t.education.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
       {
         t.education.items.map((e) => (
           <div class="row-item">
@@ -162,8 +183,12 @@ const year = new Date().getFullYear();
       }
     </section>
 
-    <section id="charlas">
-      <h2>{t.talks.heading}</h2>
+    <section id="charlas" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(5)}</span>
+        <h2>{t.talks.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
       {
         t.talks.items.map((c) => (
           <div class="row-item">
@@ -176,8 +201,12 @@ const year = new Date().getFullYear();
       }
     </section>
 
-    <section id="idiomas">
-      <h2>{t.languagesSection.heading}</h2>
+    <section id="idiomas" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(6)}</span>
+        <h2>{t.languagesSection.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
       <div class="stack-group">
         <span>{t.languagesSection.languages.label}</span>
         <div>{t.languagesSection.languages.value}</div>
@@ -188,24 +217,30 @@ const year = new Date().getFullYear();
       </div>
     </section>
 
-    <section id="contacto" class="contact">
-      <h2>{t.contact.heading}</h2>
-      <p>{t.contact.body}</p>
-      <div class="hero-links">
-        <a class="btn" href={`mailto:${site.email}`}>
-          <Icon name="mail" />
-          {site.email}
-        </a>
-        {
-          site.links
-            .filter((l) => !l.url.startsWith('mailto:'))
-            .map((l) => (
-              <a class="btn" href={l.url} target="_blank" rel="noopener">
-                <Icon name={l.icon} />
-                {l.label}
-              </a>
-            ))
-        }
+    <section id="contacto" class="reveal">
+      <div class="section-head">
+        <span class="section-num">{n(7)}</span>
+        <h2>{t.contact.heading}</h2>
+        <span class="section-rule"></span>
+      </div>
+      <div class="contact-card">
+        <p>{t.contact.body}</p>
+        <div class="hero-links">
+          <a class="btn btn-primary" href={`mailto:${site.email}`}>
+            <Icon name="mail" />
+            {site.email}
+          </a>
+          {
+            site.links
+              .filter((l) => !l.url.startsWith('mailto:'))
+              .map((l) => (
+                <a class="btn" href={l.url} target="_blank" rel="noopener">
+                  <Icon name={l.icon} />
+                  {l.label}
+                </a>
+              ))
+          }
+        </div>
       </div>
     </section>
   </div>
@@ -215,3 +250,36 @@ const year = new Date().getFullYear();
   <span>© {year} {site.name}</span>
   <span>{t.footer}</span>
 </footer>
+
+<script>
+  // Barra de progreso de scroll + aparición de secciones.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const bar = document.getElementById('progress');
+  if (bar) {
+    const onScroll = () => {
+      const h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = `scaleX(${h > 0 ? window.scrollY / h : 0})`;
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  const items = document.querySelectorAll('.reveal');
+  if (reduce || !('IntersectionObserver' in window)) {
+    items.forEach((el) => el.classList.add('in'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry, i) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          setTimeout(() => el.classList.add('in'), i * 70);
+          io.unobserve(el);
+        });
+      },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0.08 }
+    );
+    items.forEach((el) => io.observe(el));
+  }
+</script>
