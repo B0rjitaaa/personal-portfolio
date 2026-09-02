@@ -1,0 +1,10 @@
+{
+  "files.eol": "\n",
+  "editor.formatOnSave": true,
+  "[astro]": { "editor.defaultFormatter": "astro-build.astro-vscode" },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/.astro": true
+  }
+}

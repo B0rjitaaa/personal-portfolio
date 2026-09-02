@@ -1,0 +1,35 @@
+services:
+  # Servidor de desarrollo con hot-reload → http://localhost:4321
+  web:
+    build: .
+    container_name: portfolio-dev
+    ports:
+      - "4321:4321"
+    volumes:
+      - .:/app                 # tu código, en vivo
+      - /app/node_modules      # node_modules vive solo en el contenedor
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: npm run dev
+
+  # Build de producción: genera ./dist en tu Mac.
+  #   docker compose run --rm build
+  build:
+    build: .
+    profiles: ["tools"]
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run build
+
+  # Sirve el ./dist ya generado → http://localhost:4322
+  #   docker compose --profile tools up preview
+  preview:
+    build: .
+    profiles: ["tools"]
+    ports:
+      - "4322:4321"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run preview

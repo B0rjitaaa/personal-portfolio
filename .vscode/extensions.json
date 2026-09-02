@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "astro-build.astro-vscode",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig"
+  ]
+}
