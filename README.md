@@ -28,23 +28,28 @@ O con el Makefile:
 
 ## Editar el contenido
 
-El sitio es bilingüe. Cada idioma tiene su fichero de contenido, con **la misma
+El sitio es bilingüe y todo el texto vive en dos diccionarios con **la misma
 estructura**: si añades algo en uno, añádelo en el otro.
 
 | Fichero | Qué contiene |
 |---|---|
-| `src/data/en.js` | Todo el texto en inglés — se sirve en `/` |
-| `src/data/es.js` | Todo el texto en español — se sirve en `/es/` |
-| `src/data/site.js` | Datos comunes: nombre, email, enlaces, avatar |
+| `src/data/en.js` | Texto en inglés — se sirve en `/` |
+| `src/data/es.js` | Texto en español — se sirve en `/es/` |
+| `src/data/site.js` | Nombre, email, GitHub, LinkedIn, foto y opciones de diseño |
 
-- Para poner foto: déjala en `public/avatar.jpg` y pon `avatar: '/avatar.jpg'`
-  en `site.js`. Si lo dejas en `null` se muestran las iniciales.
-- Para invertir los idiomas (español en la raíz): cambia `defaultLang` en
-  `site.js` e intercambia el contenido de `src/pages/index.astro` y
-  `src/pages/es/index.astro`.
+Dentro de cada diccionario, las claves siguen las secciones de la página:
+`nav`, `hero`, `about`, `exp` (experiencia), `work` (proyectos), `diff`,
+`skills`, `talks`, `edu` y `contact`.
 
-Los estilos y la paleta (modo claro y oscuro) están en `src/styles/global.css`,
-en las variables CSS de `:root`.
+Opciones en `site.js`:
+
+- `heroVariant`: `'A'` (por defecto) o `'B'` — las dos variantes de portada
+  que traía el diseño.
+- `showTalks`: `false` oculta la sección de charlas.
+- `site.photo`: la foto de contacto, en `public/borja.jpg`.
+
+El marcado está en `src/components/Portfolio.astro` (estilos en línea, tal como
+venía el diseño) y los estilos globales en `src/styles/global.css`.
 
 ## Publicar en GitHub Pages
 
@@ -76,10 +81,10 @@ en las variables CSS de `:root`.
 5. El workflow `.github/workflows/deploy.yml` despliega en cada push a `main`.
    El progreso se ve en la pestaña **Actions**.
 
-## Dominio propio (danir.dev)
+## Dominio propio
 
-1. Crea `public/CNAME` con una única línea: `danir.dev`
-2. `site: 'https://danir.dev'` y sin `base` en `astro.config.mjs`.
+1. Crea `public/CNAME` con una única línea: `tudominio.com`
+2. `site: 'https://tudominio.com'` y sin `base` en `astro.config.mjs`.
 3. DNS apuntando a GitHub Pages:
    - `A` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
    - o `CNAME` de `www` → `TU-USUARIO.github.io`

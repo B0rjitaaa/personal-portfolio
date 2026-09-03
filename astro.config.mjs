@@ -11,7 +11,7 @@ import { defineConfig } from 'astro/config';
 //   site: 'https://TU-USUARIO.github.io'   ·  base: '/PersonalPortfolio'
 //
 // Caso C — dominio propio (con public/CNAME)
-//   site: 'https://danir.dev'              ·  base: sin definir
+//   site: 'https://TU-DOMINIO.com'              ·  base: sin definir
 // ─────────────────────────────────────────────────────────────
 
 export default defineConfig({
