@@ -7,16 +7,16 @@ import { defineConfig } from 'astro/config';
 // Caso A (recomendado) — repo llamado  TU-USUARIO.github.io
 //   site: 'https://TU-USUARIO.github.io'   ·  base: sin definir
 //
-// Caso B — repo de proyecto, p.ej. PersonalPortfolio
-//   site: 'https://TU-USUARIO.github.io'   ·  base: '/PersonalPortfolio'
+// Caso B (el actual) — repo de proyecto B0rjitaaa/personal-portfolio
+//   site: 'https://b0rjitaaa.github.io'   ·  base: '/personal-portfolio'
 //
 // Caso C — dominio propio (con public/CNAME)
 //   site: 'https://TU-DOMINIO.com'              ·  base: sin definir
 // ─────────────────────────────────────────────────────────────
 
 export default defineConfig({
-  site: 'https://TU-USUARIO.github.io',
-  // base: '/PersonalPortfolio',
+  site: 'https://b0rjitaaa.github.io',
+  base: '/personal-portfolio',
   build: { format: 'directory' },
   vite: {
     server: {
