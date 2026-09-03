@@ -16,7 +16,7 @@ export default {
   hero: {
     eyebrow: "Project Manager · Senior Python / Django",
     h1: "From scope to production.",
-    lede: "I combine project leadership with hands-on backend development, on current technology and focused on delivery.",
+    lede: "I combine project leadership with hands-on backend development, on current technology and with a focus on delivery.",
     primary: "See work",
     secondary: "Contact me",
     facts: [
@@ -190,7 +190,7 @@ export default {
   contact: {
     eyebrow: "Contact",
     h2: "Got a project or a role in mind?",
-    body: "Write to me and we'll talk scope, timelines and how it fits. Open to freelance proposals and to PM or senior backend roles.",
+    body: "Open to freelance proposals, PM, and Senior Backend roles. Reach out to discuss your project's scope, timeline, and goals to see how we can work together.",
     mail: "Write to me",
     foot: "Available for projects and conversations"
   }
